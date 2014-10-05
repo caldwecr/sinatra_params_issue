@@ -52,6 +52,25 @@ class MyAppTest < Test::Unit::TestCase
     assert_equal 'Doggie and Lassie are in their own pack.', last_response.body
   end
 
+  def test_dont_list_dogs_first
+    @params = {
+        packs: [
+            {
+                location: 'San Francisco',
+                dogs: ['Spot', 'Fido', 'Rover'],
+            },
+            {
+                location: 'Canada',
+                dogs: ['Doggie', 'Lassie'],
+            },
+        ],
+    }
+
+
+    post "/dogs", params = @params
+    assert_equal 'Spot, Fido, and Rover are in a pack, Doggie and Lassie are in a different pack.', last_response.body
+  end
+
   # This should pass, but it doesn't
   def test_parse_array_of_hashes_starting_with_array
     @params = {
